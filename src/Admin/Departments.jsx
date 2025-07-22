@@ -20,21 +20,33 @@ function Departments() {
   const [popUpMessage, setpopUpMessage] = useState();
 
 const [department, setdepartment] = useState([]);
-// const [currentPage, setCurrentPage] = useState(1);
-// const [itemsPerPage, setItemsPerPage] = useState(5);
 
-// // Calculate current items to display
-// const lastItemIndex = currentPage * itemsPerPage;
-// const firstItemIndex = lastItemIndex - itemsPerPage;
-// const currentItems = department.slice(firstItemIndex, lastItemIndex);
+// pagination
+  const [itemPerPage, setitemPerPage] = useState(7)
+  const [currentIndex, setcurrentIndex] = useState(0)
+  const [lastIndex, setlastIndex] = useState(6)
+  const pages = [];
 
-// // Calculate total pages using a for loop
-// const totalPages = Math.ceil(department.length / itemsPerPage);
-// const pages = [];
+  for(let i=0; i<Math.ceil(department.length/itemPerPage); i++){
+  pages.push(i);
+  }
 
-// for (let i = 1; i <= totalPages; i++) {
-//   pages.push(i);
-// }
+  const currentItems = department.slice(currentIndex, lastIndex);
+
+    const NextPage=()=>{
+    if(lastIndex < department.length){
+    setcurrentIndex(lastIndex)
+    setlastIndex(lastIndex+itemPerPage)
+    }
+  }
+  const PrevPage=()=>{
+    if(currentIndex < 0){
+      setcurrentIndex(0)
+      setlastIndex(itemPerPage)
+    }
+    setcurrentIndex(currentIndex-itemPerPage)
+    setlastIndex(currentIndex)
+  }
 
 
   const addNewEmployee = () => {
@@ -179,23 +191,23 @@ const [department, setdepartment] = useState([]);
                   <th className="hover:tracking-wide transition-all">Department</th>
                   <th className="hover:tracking-wide transition-all">Action</th>
                 </tr>
-                {department.filter((dep) =>dep.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                {currentItems.filter((dep) =>dep.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
                 dep.status.toLowerCase().includes(searchTerm.toLowerCase())
                 
               ).map((x, y) => {
       return (
       <tr key={y} className={`hover:bg-slate-950 rounded-md h-[50px]`}>
         <th className="px-4">{y + 1}</th>
-        <th className="px-4 hover:tracking-wide transition-all">
+        <th title={x.departmentName} className="px-4 hover:tracking-wide transition-all">
           {x.departmentName}
         </th>
         <th className="px-4">
-          <button onClick={() => {
+          <button title="Edit" onClick={() => {
               seteditFormactive(true);
               seteditdepartmentName(x.departmentName);
               seteditdepartmentDescription(x.departmentDescription);
             }} className="bg-green-500 px-4 py-1 text-[14px] rounded-sm -translate-x-1">Edit</button>
-          <button onClick={() => {
+          <button title="Delete" onClick={() => {
               axios.post(`${process.env.REACT_APP_SECRET_KEY}/deletedepartment`,
                   { x }).then((res) => {
                   res.data.message === "Department Deleted"
@@ -213,11 +225,19 @@ const [department, setdepartment] = useState([]);
       </tr>
     );
   })}
-
-              </table>
+  </table>
+            <div className='flex items-center justify-center'>
+          <button onClick={PrevPage} title="prev" className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Prev</button>
+        {pages.map((e,x)=>{
+          return <button title={x} key={x} onClick={(r)=>{
+            setcurrentIndex(itemPerPage*e)
+            setlastIndex(itemPerPage*(e+1))
+            // console.log(currentIndex,lastIndex)
+          }} className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>{e}</button>
+        })}
+        <button onClick={NextPage} title="next" className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Next</button>
+        </div>
             </div>}
-             
-            
           </div>
         </div>
       </div>

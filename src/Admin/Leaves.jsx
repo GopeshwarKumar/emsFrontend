@@ -3,7 +3,6 @@ import AdminNavbar from "./AdminNavbar";
 import AdminHeader from "./AdminHeader";
 import axios from "axios";
 import {toast,ToastContainer} from 'react-toastify'
-import { BiRightArrowAlt } from "react-icons/bi";
 
 function Leaves() {
 
@@ -38,6 +37,32 @@ function Leaves() {
     }).catch(err=>{
       alert('Error !')
     })
+  }
+
+    const [itemPerPage, setitemPerPage] = useState(7)
+    const [currentIndex, setcurrentIndex] = useState(0)
+    const [lastIndex, setlastIndex] = useState(6)
+    const pages = [];
+  
+    for(let i=0; i<Math.ceil(leavedata.length/itemPerPage); i++){
+    pages.push(i);
+    }
+  
+    const currentItems = leavedata.slice(currentIndex, lastIndex);
+  
+    const NextPage=()=>{
+    if(lastIndex < leavedata.length){
+    setcurrentIndex(lastIndex)
+    setlastIndex(lastIndex+itemPerPage)
+    }
+  }
+  const PrevPage=()=>{
+    if(currentIndex < 0){
+      setcurrentIndex(0)
+      setlastIndex(itemPerPage)
+    }
+    setcurrentIndex(currentIndex-itemPerPage)
+    setlastIndex(currentIndex)
   }
   return (
     <>
@@ -85,7 +110,7 @@ function Leaves() {
                 </tr><br/>
                 {/* {leavedata.filter((e) =>e.name.toLowerCase.includes(SearchId.toLowerCase)) */}
                 
-                {leavedata.map((r, t) => {
+                {currentItems.map((r, t) => {
                   return (
                     <tr key={t} className={`hover:bg-slate-950 rounded-md`}>
                       <th className="p-2">{t + 1}</th>
@@ -108,7 +133,18 @@ function Leaves() {
                 })}
               </table>
             </div>
-                <p className="lg:hidden rounded-lg flex float-end items-center gap-2 shadow-xl px-3 mx-5 cursor-pointer">Slide Right <BiRightArrowAlt className="text-[25px] animate-pulse hover:translate-x-3 hover:text-[20px] transition-all duration-700"/></p>
+            <div className='flex items-center justify-center'>
+          <button onClick={PrevPage} title="prev" className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Prev</button>
+        {pages.map((e,x)=>{
+          return <button title={x} key={x} onClick={(r)=>{
+            setcurrentIndex(itemPerPage*e)
+            setlastIndex(itemPerPage*(e+1))
+            // console.log(currentIndex,lastIndex)
+          }} className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>{e}</button>
+        })}
+        <button onClick={NextPage} title="next" className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Next</button>
+        </div>
+                {/* <p className="lg:hidden rounded-lg flex float-end items-center gap-2 shadow-xl px-3 mx-5 cursor-pointer">Slide Right <BiRightArrowAlt className="text-[25px] animate-pulse hover:translate-x-3 hover:text-[20px] transition-all duration-700"/></p> */}
             {/* {EmployeePopoUp && (
               <div className={`absolute left-1/4 top-[15%] bg-gradient-to-br from-slate-900 to-cyan-900 shadow-inner shadow-emerald-500 rounded-md p-5`}>
                 <button onClick={() => {

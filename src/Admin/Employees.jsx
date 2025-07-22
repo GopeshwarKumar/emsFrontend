@@ -55,7 +55,32 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
     })
   },[])
 
+  // pagination
+  const [itemPerPage, setitemPerPage] = useState(7)
+  const [currentIndex, setcurrentIndex] = useState(0)
+  const [lastIndex, setlastIndex] = useState(6)
+  const pages = [];
 
+  for(let i=0; i<Math.ceil(employeeArray.length/itemPerPage); i++){
+  pages.push(i);
+  }
+
+  const currentItems = employeeArray.slice(currentIndex, lastIndex);
+
+    const NextPage=()=>{
+    if(lastIndex < employeeArray.length){
+    setcurrentIndex(lastIndex)
+    setlastIndex(lastIndex+itemPerPage)
+    }
+  }
+  const PrevPage=()=>{
+    if(currentIndex < 0){
+      setcurrentIndex(0)
+      setlastIndex(itemPerPage)
+    }
+    setcurrentIndex(currentIndex-itemPerPage)
+    setlastIndex(currentIndex)
+  }
 
   const EditemployeeDetails=(e)=>{
     e.preventDefault()
@@ -95,7 +120,6 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
     })
   }
 
-
   const [searchTerm, setSearchTerm] = useState("");
 
   
@@ -130,9 +154,7 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
                         <th className='px-4'>Action</th>
                       </tr>
                     </thead>
-                    {/* {allLeaves.filter((leave) =>leave.name.toLowerCase().includes(searchTerm
-              )) */}
-                    {employeeArray.filter((employee)=>
+                    {currentItems.filter((employee)=>
                         employee.name.toLowerCase().includes(searchTerm) ||
                         employee.department.toLowerCase().includes(searchTerm) ||
                         employee.id.toLowerCase().includes(searchTerm)
@@ -175,9 +197,19 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
                     </table>)}
         </div>
         <p className="sm:hidden flex float-end items-center gap-2 shadow-sm shadow-gray-200 px-3 mx-5 cursor-pointer">Slide Right <BiRightArrowAlt className="text-[25px] animate-pulse hover:translate-x-3 hover:text-[20px] transition-all duration-700"/></p>
+        <div className='flex items-center justify-center'>
+          <button onClick={PrevPage} title='Prev' className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Prev</button>
+        {pages.map((e,x)=>{
+          return <button onClick={(r)=>{
+            setcurrentIndex(itemPerPage*e)
+            setlastIndex(itemPerPage*(e+1))
+            // console.log(currentIndex,lastIndex)
+          }} className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>{e}</button>
+        })}
+        <button onClick={NextPage} title='Next' className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Next</button>
         </div>
         </div>
-
+        </div>
 
 
 
@@ -209,7 +241,7 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
       </div>
       </motion.div>}
 
-      {slideEmployeePopoUp &&<motion.div className={`absolute left-1/4 top-[15%] bg-gradient-to-br from-indigo-700 via-sky-700 border-2 border-emerald-500 shadow-emerald-500 rounded-tl-[20%] rounded-md p-5`}>
+      {slideEmployeePopoUp &&<motion.div className={`absolute left-1/4 top-[15%] bg-gradient-to-tr from-indigo-700 via-sky-700 border-2 border-emerald-500 shadow-emerald-500 rounded-tl-[20%] rounded-md p-5`}>
       <button onClick={()=>{setslideEmployeePopoUp(false)}} className='float-right bg-red-600 rounded-md px-2 hover:bg-blue-600 transition-all duration-1000'><GiSplitCross title='Hide' className='text-[25px]'/></button><br/>
         <h1 className='text-center font-bold '>Employee Details </h1>
       <div className='w-[95%] h-[80%] flex items-center justify-center'>
