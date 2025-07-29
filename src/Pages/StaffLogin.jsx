@@ -71,7 +71,7 @@ function StaffLogin() {
             }}
             value={useremail}
             name="emai"
-            placeholder="Enter Your Name"
+            placeholder="Enter Your E-mail"
             className="outline-none rounded 2xl:py-[7px] xl:py-[10px] lg:py-[10px] md:py-[10px] sm:py-[10px] py-[7px] 2xl:px-[20px] xl:px-[20px] lg:px-[20px] sm:px-[20px] px-[10px] font-sans sm:text-[16px] text-[14px] text-black placeholder:text-slate-600 placeholder:hover:tracking-tighter transition-all placeholder:duration-100"
           />
           <div className="flex items-center">
