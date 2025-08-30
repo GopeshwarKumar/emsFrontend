@@ -29,7 +29,7 @@ function Salary() {
           e.preventDefault();
           setloader(true)
 
-          axios.post(`https://emdbackend.onrender.com/saveEmployeeSalary`,{employeemail,employee,basicsalary,allowance,deduction,paydate}).then(res=>{
+          axios.post(`${process.env.REACT_APP_SECRET_KEY}/saveEmployeeSalary`,{employeemail,employee,basicsalary,allowance,deduction,paydate}).then(res=>{
             res.data.message==='Salary saved successfully' ? toast.success(res.data.message) : toast.success(res.data.message)
           }).catch(err=>{
             alert('Error caught in saving salary')
@@ -45,7 +45,7 @@ function Salary() {
         }
 
         useEffect(()=>{
-          axios.get(`https://emdbackend.onrender.com/getAlldepartments`).then(res =>{
+          axios.get(`${process.env.REACT_APP_SECRET_KEY}/getAlldepartments`).then(res =>{
             setgetdepartment(res.data)
           }).catch( err=>{
             alert('Error found in fetching Departments !')
@@ -55,7 +55,7 @@ function Salary() {
         },[])
         
         useEffect(()=>{
-          axios.post(`https://emdbackend.onrender.com/getdepartmentemployee`,{department}).then(res =>{
+          axios.post(`${process.env.REACT_APP_SECRET_KEY}/getdepartmentemployee`,{department}).then(res =>{
             setgetdepartmentemployee(res.data)
           }).catch(errr=>{
             alert('Error found in fetching Employee !')
