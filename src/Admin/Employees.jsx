@@ -86,7 +86,7 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
     e.preventDefault()
     setloader(true)
     
-    axios.post(`https://emdbackend.onrender.com/editemployeedetails`,{editName,editEmail,editEmployeeId,editGender,editDob,editMartialStatus,editDesignation,editDepartment,editSalary,editRole}).then(res=>{
+    axios.post(`${process.env.REACT_APP_SECRET_KEY}/editemployeedetails`,{editName,editEmail,editEmployeeId,editGender,editDob,editMartialStatus,editDesignation,editDepartment,editSalary,editRole}).then(res=>{
       toast.success(res.data.message)
     }).catch(err=>{
       alert('Error found !')
@@ -97,7 +97,7 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
 
   const DeleteEmployee=async(r)=>{
     const id=r._id
-    axios.post(`https://emdbackend.onrender.com/deleteEmployee`,{id}).then(res=>{
+    axios.post(`${process.env.REACT_APP_SECRET_KEY}/deleteEmployee`,{id}).then(res=>{
       toast.success(res.data.message)
     }).catch(err=>{
       alert('Error found !')
@@ -112,7 +112,7 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
   const CheckLeave=async(r)=>{
     let email=r.email
     setEmployeeLeavePopoUp(true)
-    axios.post(`https://emdbackend.onrender.com/checkEmployeeLeave`,{email}).then(res=>{
+    axios.post(`${process.env.REACT_APP_SECRET_KEY}/checkEmployeeLeave`,{email}).then(res=>{
       setallLeaves(res.data)
     }).catch(err=>{
 
