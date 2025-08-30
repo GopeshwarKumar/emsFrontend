@@ -23,7 +23,7 @@ function AdminNewPassword() {
       setError('Passwords do not match.');
       return;
     }
-    axios.post(`https://emdbackend.onrender.com/adminNewpassword`, { newPassword,confirmPassword,otp }).then(res=>{
+    axios.post(`${process.env.REACT_APP_SECRET_KEY}/adminNewpassword`, { newPassword,confirmPassword,otp }).then(res=>{
       console.log(res)
     }).catch(err=>{
 
