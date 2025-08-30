@@ -30,7 +30,7 @@ function EmployeeNewpassword() {
       setError('Passwords do not match.');
       return;
     }
-    axios.post(`${process.env.REACT_APP_SECRET_KEY}/employeeNewpassword`, { newPassword,confirmPassword,otp }).then(res=>{
+    axios.post(`https://emdbackend.onrender.com/employeeNewpassword`, { newPassword,confirmPassword,otp }).then(res=>{
 
       res.data.message=== 'otp sent to email' ? toast.success(res.data.message) : toast.warn(res.data.message)
       if(res.status=== 200 && res.data.message=== 'password changed successfully'){
