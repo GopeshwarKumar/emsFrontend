@@ -57,7 +57,7 @@ const [department, setdepartment] = useState([]);
     e.preventDefault();
     setloader(true);
 
-    axios.post(`https://emdbackend.onrender.com/addnewdepartment`, {
+    axios.post(`${process.env.REACT_APP_SECRET_KEY}/addnewdepartment`, {
         departmentName,
         departmentDescription,
       }).then((ress) => {
@@ -81,7 +81,7 @@ const [department, setdepartment] = useState([]);
     e.preventDefault();
     // setloader(true);
 
-    axios.post(`https://emdbackend.onrender.com/editdepartment`, {
+    axios.post(`${process.env.REACT_APP_SECRET_KEY}/editdepartment`, {
         editdepartmentName,
         editdepartmentDescription,
       }).then((ress) => {
@@ -102,7 +102,7 @@ const [department, setdepartment] = useState([]);
   };
 
   useEffect(() => {
-    axios.get(`https://emdbackend.onrender.com/getAlldepartments`).then((res) => {
+    axios.get(`${process.env.REACT_APP_SECRET_KEY}/getAlldepartments`).then((res) => {
         setdepartment(res.data);
         console.log(res)
       }).catch((er) => {
