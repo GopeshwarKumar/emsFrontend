@@ -12,7 +12,7 @@ function EmployeeProfile() {
 
   useEffect(()=>{
     const email=localStorage.getItem('employeeEmail')
-    axios.post(`${process.env.REACT_APP_SECRET_KEY}/getemployeeDetails`,{email}).then(res=>{
+    axios.post(`https://emdbackend.onrender.com/getemployeeDetails`,{email}).then(res=>{
       setemployeeDetails(res.data.message)
     }).catch(Er=>{
       alert('Error found !')
