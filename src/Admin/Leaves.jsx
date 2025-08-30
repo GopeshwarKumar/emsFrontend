@@ -10,7 +10,7 @@ function Leaves() {
   const [leavedata, setleavedata] = useState([]);
 
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_SECRET_KEY}/showleaves`).then((res) => {
+    axios.get(`https://emdbackend.onrender.com/showleaves`).then((res) => {
         setleavedata(res.data.alleaves)
       }).catch((err) => {
         alert("Error found");
@@ -20,7 +20,7 @@ function Leaves() {
   const ApproveLeave=async(r)=>{
     try {
     const id=r._id
-    axios.post(`${process.env.REACT_APP_SECRET_KEY}/approvedleave`, {id }).then(res=>{
+    axios.post(`https://emdbackend.onrender.com/approvedleave`, {id }).then(res=>{
       res.data.message=== "Leave approved" ? toast.success(res.data.message) : toast.warn(res.data.message)
     }).catch(err=>{
       alert('Error !')
@@ -32,7 +32,7 @@ function Leaves() {
 
   const RejectLeave=async(r)=>{
     const id=r._id
-    axios.post(`${process.env.REACT_APP_SECRET_KEY}/rejectedleave`, {id }).then(res=>{
+    axios.post(`https://emdbackend.onrender.com/rejectedleave`, {id }).then(res=>{
       res.data.message=== "Leave rejected" ? toast.success(res.data.message) : toast.warn(res.data.message)
     }).catch(err=>{
       alert('Error !')
