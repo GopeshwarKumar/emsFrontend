@@ -18,7 +18,7 @@ function CreateAccount() {
         e.preventDefault();
         setactive(true)
         
-        await axios.post(`https://emdbackend.onrender.com/adminaccout`,{userName,email,password}).then(res =>{
+        await axios.post(`${process.env.REACT_APP_SECRET_KEY}/adminaccout`,{userName,email,password}).then(res =>{
           if(res.data.message==='admin accounnt created' && res.status===200){
             navigate("/")
             toast.success(res.data)
