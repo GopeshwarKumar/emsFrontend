@@ -15,7 +15,7 @@ function EmployeeSalary() {
     if(!email){
       return toast.warn('Email not retrive to fetch salary')
     }
-    axios.post(`${process.env.REACT_APP_SECRET_KEY}/getEmployeesalaryDetails`,{email}).then(res=>{
+    axios.post(`https://emdbackend.onrender.com/getEmployeesalaryDetails`,{email}).then(res=>{
       setsalaryDetails(res.data)
     }).catch(er=>{
       alert('salary fetch error')
