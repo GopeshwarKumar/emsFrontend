@@ -14,7 +14,7 @@ function EmployeeSetting() {
     e.preventDefault();
     setactive(true);
 
-    axios.post(`${process.env.REACT_APP_SECRET_KEY}/employeeforgotpassword`, { email }).then((res) => {
+    axios.post(`https://emdbackend.onrender.com/employeeforgotpassword`, { email }).then((res) => {
       res.data.message=== 'otp sent to email' ? toast.success(res.data.message) : toast.warn(res.data.message)
       if(res.status=== 200 && res.data.message=== 'otp sent to email'){
         navigate('/employeeNewpassword')
