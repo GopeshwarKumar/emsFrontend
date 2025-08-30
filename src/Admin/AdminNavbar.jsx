@@ -14,7 +14,7 @@ function AdminNavbar() {
   const location=useLocation()
   return (
     <>
-    <div className="lg:w-[12%] w-[25%] bg-gradient-to-tr from-indigo-700 via-sky-700 flex flex-col justify-start items-center pt-4">
+    <div className="xl:w-[15%] md:w-[20%] w-[25%] bg-gradient-to-tr from-indigo-700 via-sky-700 flex flex-col justify-start items-center pt-4">
           <Link to={"/adminDashboard"} className={`w-full p-2 text-white font-bold ${location.pathname==='/adminDashboard' ? 'bg-gradient-to-bl from-gray-800 via-zinc-900 to-slate-900' : ''} rounded-xl cursor-pointer sm:text-center hover:tracking-wider transition-all flex items-center justify-between px-3 gap-3`}>
           <MdDashboard className={`${location.pathname==='/adminDashboard' ? 'text-blue-600' :''} text[25px]`}/>DashBoard</Link>
           <Link to={"/adminEmployees"} className={`w-full p-2 text-white font-bold ${location.pathname==='/adminEmployees' ? 'bg-gradient-to-bl from-gray-800 via-zinc-900 to-slate-900' : ''}  rounded-xl cursor-pointer sm:text-center hover:tracking-wider transition-all flex items-center justify-between px-3 gap-3 `}>
