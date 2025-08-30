@@ -8,7 +8,7 @@ import { AiFillAlipayCircle } from "react-icons/ai";
 import { MdOutlinePendingActions } from "react-icons/md";
 import { FcApproval } from "react-icons/fc";
 import { FcDisapprove } from "react-icons/fc";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 
 const AdminNavbar=lazy(()=>(import('./AdminNavbar')))
 const AdminHeader=lazy(()=>(import('./AdminHeader')))
@@ -22,37 +22,41 @@ function Dashboard() {
   const [totalLeaveapproved, settotalLeaveapproved] = useState([])
   
   useEffect(()=>{
-    axios.get(`${process.env.REACT_APP_SECRET_KEY}/showEmployee`).then(res=>{
+    settotalEmployee('Loading')
+    axios.get(`https://emdbackend.onrender.com/showEmployee`).then(res=>{
       settotalEmployee(res.data.length)
     }).catch(err=>{
       alert('Error in fetching Employee !')
     }).finally(final=>{
-      toast.success('Employee count done')
+      // toast.success('Employee count done')
     })
   },[])
 
   useEffect(()=>{
-    axios.get(`${process.env.REACT_APP_SECRET_KEY}/getAlldepartments`).then(res=>{
+    settotaldepart('Loading')
+    axios.get(`https://emdbackend.onrender.com/getAlldepartments`).then(res=>{
       settotaldepart(res.data.length)
     }).catch(err=>{
       alert('Error in fetching department !')
     }).finally(final=>{
-      toast.success('Department count done')
+      // toast.success('Department count done')
     })
   },[])
 
   useEffect(()=>{
-    axios.get(`${process.env.REACT_APP_SECRET_KEY}/showleaves`).then(res=>{
+    settotalLeaveapproved('Loading')
+    axios.get(`https://emdbackend.onrender.com/showleaves`).then(res=>{
       settotalLeaveapproved(res.data.alleaves)
     }).catch(err=>{
       alert('Error in fetching leave !')
     }).finally(final=>{
-      toast.success('Leave count done')
+      // toast.success('Leave count done')
     })
   },[])
 
   useEffect(()=>{
-    axios.get(`${process.env.REACT_APP_SECRET_KEY}/showsalary`).then(res=>{
+    settotalSalary('Loading')
+    axios.get(`https://emdbackend.onrender.com/showsalary`).then(res=>{
       let sum=0
       res.data.map((e,x)=>{
          sum=sum+e.allowance+e.basicsalary+e.deduction
@@ -61,20 +65,10 @@ function Dashboard() {
     }).catch(err=>{
       alert('Error in fetching total salary !')
     }).finally(final=>{
-      toast.success('Salary count done')
+      // toast.success('Salary count done')
     })
   },[])
 
-  // useEffect(()=>{
-  //   axios.get(`${process.env.REACT_APP_SECRET_KEY}/getAlldepartments`).then(res=>{
-  //     // settotaldepart(res.data.length)
-  //     console.log(res)
-  //   }).catch(err=>{
-  //     alert('Error found !')
-  //   }).finally(final=>{
-
-  //   })
-  // },[])
   return (
     <>
     <ToastContainer className={`text-[15px]`}/>
