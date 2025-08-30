@@ -27,7 +27,7 @@ function Login(props) {
             </div>
         </div>
         <div className='flex justify-between items-center px-5'>
-        <button onClick={showpanel} className='flex items-center gap-2 bg-slate-900 text-center py-2 px-2 rounded-md shadow-lg hover:shadow-cyan-700 hover:text-blue-600 hover:tracking-wide transition-all duration-150 vmd:text-[14px]'>{showloginform===true ?"Admin Login" :"Staff Login"}<IoMdArrowRoundForward className='text-[25px] hover:scale-110'/></button>
+        <button onClick={showpanel} className='group flex items-center gap-2 bg-slate-900 text-center py-2 px-2 rounded-md shadow-lg hover:shadow-cyan-700 hover:text-blue-600 hover:tracking-wide transition-all duration-150 vmd:text-[14px]'>{showloginform===true ? <p className='px-2 group-hover:hidden'>Admin Login</p> : <p className='px-2 group-hover:hidden'>Staff Login</p>}<IoMdArrowRoundForward className='group-hover:w-[100px] group-hover:translate-x-3 transition-all duration-1000 text-[25px] hover:scale-110'/></button>
         
         </div>
       </div>
