@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom'
 import {toast,ToastContainer} from 'react-toastify'
 import { GiSplitCross } from "react-icons/gi";
 import { lazy } from 'react'
-import { BiRightArrowAlt } from 'react-icons/bi'
+import { Suspense } from 'react'
 
 
 const NewEmployeeForm=lazy(()=>import('./NewEmployeeForm'))
@@ -56,31 +56,31 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
   },[])
 
   // pagination
-  const [itemPerPage, setitemPerPage] = useState(7)
-  const [currentIndex, setcurrentIndex] = useState(0)
-  const [lastIndex, setlastIndex] = useState(6)
-  const pages = [];
+  // const [itemPerPage, setitemPerPage] = useState(7)
+  // const [currentIndex, setcurrentIndex] = useState(0)
+  // const [lastIndex, setlastIndex] = useState(6)
+  // const pages = [];
 
-  for(let i=0; i<Math.ceil(employeeArray.length/itemPerPage); i++){
-  pages.push(i);
-  }
+  // for(let i=0; i<Math.ceil(employeeArray.length/itemPerPage); i++){
+  // pages.push(i);
+  // }
 
-  const currentItems = employeeArray.slice(currentIndex, lastIndex);
+  // const currentItems = employeeArray.slice(currentIndex, lastIndex);
 
-    const NextPage=()=>{
-    if(lastIndex < employeeArray.length){
-    setcurrentIndex(lastIndex)
-    setlastIndex(lastIndex+itemPerPage)
-    }
-  }
-  const PrevPage=()=>{
-    if(currentIndex < 0){
-      setcurrentIndex(0)
-      setlastIndex(itemPerPage)
-    }
-    setcurrentIndex(currentIndex-itemPerPage)
-    setlastIndex(currentIndex)
-  }
+  //   const NextPage=()=>{
+  //   if(lastIndex < employeeArray.length){
+  //   setcurrentIndex(lastIndex)
+  //   setlastIndex(lastIndex+itemPerPage)
+  //   }
+  // }
+  // const PrevPage=()=>{
+  //   if(currentIndex < 0){
+  //     setcurrentIndex(0)
+  //     setlastIndex(itemPerPage)
+  //   }
+  //   setcurrentIndex(currentIndex-itemPerPage)
+  //   setlastIndex(currentIndex)
+  // }
 
   const EditemployeeDetails=(e)=>{
     e.preventDefault()
@@ -138,11 +138,12 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
           setSearchTerm(e.target.value)
         }} placeholder='Search By name' className='lg:w-[15vw] md:w-[25vw] sm:w-[30vw] mb:w-[40vw] vmd:w-[80vw] outline-none border-b-[3px] border-blue-800 bg-sky-700 text-[15px] vmd:py-[5px] py-[10px] px-[10px] text-white hover:opacity-75 transition-all focus:bg-slate-600  '/>
         </div>
-        <div onClick={addNewEmployee} className="cursor-pointer bg-green-500 font-bold px-3 py-1 rounded-md text-center text-[15px] hover:opacity-70 ">{active ===true ? "Hide" :"Add Employee"}</div>
+        <div onClick={addNewEmployee} className={`${active ===false ?"bg-green-500" :"bg-red-500"} cursor-pointer font-bold px-3 py-1 rounded-md text-center text-[15px] hover:opacity-70`}>{active ===true ? "Hide" :"Add Employee"}
+        </div>
         </div>
 
         <div className='hidescroller w-full h-[66vh] overflow-x-scroll p-5'>
-                    {active === true ? <NewEmployeeForm/> : (<table className='w-full'>
+                    {active === true ? <Suspense fallback={<h2>Loading</h2>}><NewEmployeeForm/></Suspense> : (<table className='w-full'>
                     <thead className='border-b-2 border-b-emerald-500 py-2'>
                       <tr className='text-nowrap w-full'>
                         <th className='px-4'>SI No.</th>
@@ -154,7 +155,7 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
                         <th className='px-4'>Action</th>
                       </tr>
                     </thead>
-                    {currentItems.filter((employee)=>
+                    {employeeArray.filter((employee)=>
                         employee.name.toLowerCase().includes(searchTerm) ||
                         employee.department.toLowerCase().includes(searchTerm) ||
                         employee.id.toLowerCase().includes(searchTerm)
@@ -196,8 +197,8 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
                     })}
                     </table>)}
         </div>
-        <p className="sm:hidden flex float-end items-center gap-2 shadow-sm shadow-gray-200 px-3 mx-5 cursor-pointer">Slide Right <BiRightArrowAlt className="text-[25px] animate-pulse hover:translate-x-3 hover:text-[20px] transition-all duration-700"/></p>
-        <div className='flex items-center justify-center'>
+        {/* <p className="sm:hidden flex float-end items-center gap-2 shadow-sm shadow-gray-200 px-3 mx-5 cursor-pointer">Slide Right <BiRightArrowAlt className="text-[25px] animate-pulse hover:translate-x-3 hover:text-[20px] transition-all duration-700"/></p>
+         <div className='flex items-center justify-center'>
           <button onClick={PrevPage} title='Prev' className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Prev</button>
         {pages.map((e,x)=>{
           return <button onClick={(r)=>{
@@ -207,7 +208,7 @@ const [slideEmployeePopoUp, setslideEmployeePopoUp] = useState(false)
           }} className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>{e}</button>
         })}
         <button onClick={NextPage} title='Next' className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Next</button>
-        </div>
+        </div> */}
         </div>
         </div>
 
