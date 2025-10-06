@@ -17,36 +17,37 @@ function Departments() {
   const [departmentDescription, setdepartmentDescription] = useState();
   const [editdepartmentName, seteditdepartmentName] = useState();
   const [editdepartmentDescription, seteditdepartmentDescription] = useState();
+  const [editdepartmentId, seteditdepartmentId] = useState();
   const [popUpMessage, setpopUpMessage] = useState();
 
 const [department, setdepartment] = useState([]);
 
 // pagination
-  const [itemPerPage, setitemPerPage] = useState(7)
-  const [currentIndex, setcurrentIndex] = useState(0)
-  const [lastIndex, setlastIndex] = useState(6)
-  const pages = [];
+  // const [itemPerPage, setitemPerPage] = useState(7)
+  // const [currentIndex, setcurrentIndex] = useState(0)
+  // const [lastIndex, setlastIndex] = useState(6)
+  // const pages = [];
 
-  for(let i=0; i<Math.ceil(department.length/itemPerPage); i++){
-  pages.push(i);
-  }
+  // for(let i=0; i<Math.ceil(department.length/itemPerPage); i++){
+  // pages.push(i);
+  // }
 
-  const currentItems = department.slice(currentIndex, lastIndex);
+  // const currentItems = department.slice(currentIndex, lastIndex);
 
-    const NextPage=()=>{
-    if(lastIndex < department.length){
-    setcurrentIndex(lastIndex)
-    setlastIndex(lastIndex+itemPerPage)
-    }
-  }
-  const PrevPage=()=>{
-    if(currentIndex < 0){
-      setcurrentIndex(0)
-      setlastIndex(itemPerPage)
-    }
-    setcurrentIndex(currentIndex-itemPerPage)
-    setlastIndex(currentIndex)
-  }
+  //   const NextPage=()=>{
+  //   if(lastIndex < department.length){
+  //   setcurrentIndex(lastIndex)
+  //   setlastIndex(lastIndex+itemPerPage)
+  //   }
+  // }
+  // const PrevPage=()=>{
+  //   if(currentIndex < 0){
+  //     setcurrentIndex(0)
+  //     setlastIndex(itemPerPage)
+  //   }
+  //   setcurrentIndex(currentIndex-itemPerPage)
+  //   setlastIndex(currentIndex)
+  // }
 
 
   const addNewEmployee = () => {
@@ -72,6 +73,7 @@ const [department, setdepartment] = useState([]);
         alert("Error found !");
       }).finally((final) => {
         setloader(false);
+        setactive(false);
         setdepartmentName("");
         setdepartmentDescription("");
       });
@@ -79,23 +81,21 @@ const [department, setdepartment] = useState([]);
 
   const EditDepartment = async (e) => {
     e.preventDefault();
-    // setloader(true);
+    setloader(true);
 
     axios.post(`${process.env.REACT_APP_SECRET_KEY}/editdepartment`, {
-        editdepartmentName,
-        editdepartmentDescription,
-      }).then((ress) => {
-        if (ress.status === 200) {
-          ress.data.message === "Department Updated"
-            ? toast.success(ress.data.message)
-            : toast.warn(ress.data.message);
+        editdepartmentName,editdepartmentId,editdepartmentDescription,
+      }).then((res) => {
+        if (res.status === 200 && res.data.message === "Updated"){
+          res.data.message === "Updated"
+            ? toast.success(res.data.message)
+            : toast.warn(res.data.message);
         }
-        // console.log(ress)
       }).catch((err) => {
-        alert("eroor");
-        // console.log(err);
+        alert("error");
       }).finally((final) => {
-        // setloader(false)
+        setloader(false)
+        seteditFormactive(false)
         // setdepartmentName('')
         // setdepartmentDescription('')
       });
@@ -104,7 +104,7 @@ const [department, setdepartment] = useState([]);
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_SECRET_KEY}/getAlldepartments`).then((res) => {
         setdepartment(res.data);
-        console.log(res)
+        // console.log(res)
       }).catch((er) => {
         alert("Error found in fetching Department !");
       });
@@ -129,20 +129,19 @@ const [department, setdepartment] = useState([]);
                 <input value={searchTerm}
   onChange={(e) => setSearchTerm(e.target.value)} required
                   placeholder="Search by name"
-                  className="lg:w-[15vw] md:w-[25vw] sm:w-[30vw] mb:w-[40vw] vmd:w-[80vw] outline-none border-b-[3px] border-blue-800 bg-sky-700 text-[15px] vmd:py-[5px] py-[10px] px-[10px] text-white placeholder:text-white hover:placeholder:tracking-wide hover:opacity-75 transition-all duration-1000 focus:bg-slate-600  "
+                  className="lg:w-[15vw] md:w-[25vw] sm:w-[30vw] mb:w-[40vw] vmd:w-[80vw] outline-none border-b-[3px] border-blue-800 bg-sky-700 text-[15px] vmd:py-[5px] py-[10px] px-[10px] text-white placeholder:text-white hover:placeholder:tracking-wide placeholder:transition-all placeholder:duration-200 hover:opacity-75 transition-all duration-200 focus:bg-slate-600  "
                 />
               </div>
               <div onClick={addNewEmployee}
-                className="cursor-pointer bg-green-600 shadow-md hover:shadow-blue-600 px-3 py-1 rounded-md text-center text-[15px] hover:opacity-70 text-white"
+                className={`${active === false ? "bg-green-600": "bg-red-600"} cursor-pointer shadow-md hover:shadow-blue-600 px-3 py-1 rounded-md text-center text-[15px] hover:opacity-70 text-white`}
               >
-                {active === true ? "Hide" : ("Add Department")}
+                {active === true ? "Hide" : "Add Department"}
                 
               </div>
             </div>
 
             {active ===true ? <form onSubmit={addNewDepartment}
-              className="absolute left-1/2 top-1/3 flex flex-col items-center justify-center gap-x-2 gap-y-2 place-content-center content-center p-5"
-            >
+              className={`flex flex-col items-center justify-center gap-x-2 gap-y-2 absolute left-1/2 top-1/3 bg-gradient-to-br from-slate-900 to-cyan-900 shadow-inner shadow-emerald-500 rounded-md p-5`}>
               <div className="flex flex-col gap-2">
                 <lavel className="text-[14px]">Department Name</lavel>
                 <input
@@ -186,24 +185,25 @@ const [department, setdepartment] = useState([]);
             </form> :
             <div className="hidescroller h-[70vh] overflow-x-scroll px-5">
               <table className="w-full overflow-x-scroll">
-                <tr className="sticky top-0 bg-slate-900 shadow-2xl h-[40px]">
+                <tr className="sticky top-0 bg-slate-800 shadow-2xl h-[40px]">
                   <th className="hover:tracking-wide transition-all">SI No.</th>
                   <th className="hover:tracking-wide transition-all">Department</th>
                   <th className="hover:tracking-wide transition-all">Action</th>
                 </tr>
-                {currentItems.filter((dep) =>dep.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                {department.filter((dep) =>dep.departmentName.toLowerCase().includes(searchTerm.toLowerCase()) || 
                 dep.status.toLowerCase().includes(searchTerm.toLowerCase())
                 
               ).map((x, y) => {
       return (
-      <tr key={y} className={`hover:bg-slate-950 rounded-md h-[50px]`}>
+      <tr key={y} className={`hover:bg-slate-700 rounded-md h-[50px]`}>
         <th className="px-4">{y + 1}</th>
-        <th title={x.departmentName} className="px-4 hover:tracking-wide transition-all">
+        <th title={x.departmentName} className="px-4 hover:tracking-wide transition-all first-letter:uppercase">
           {x.departmentName}
         </th>
         <th className="px-4">
           <button title="Edit" onClick={() => {
               seteditFormactive(true);
+              seteditdepartmentId(x._id)
               seteditdepartmentName(x.departmentName);
               seteditdepartmentDescription(x.departmentDescription);
             }} className="bg-green-500 px-4 py-1 text-[14px] rounded-sm -translate-x-1">Edit</button>
@@ -226,26 +226,25 @@ const [department, setdepartment] = useState([]);
     );
   })}
   </table>
-            <div className='flex items-center justify-center'>
+            {/* <div className='flex items-center justify-center'>
           <button onClick={PrevPage} title="prev" className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Prev</button>
         {pages.map((e,x)=>{
-          return <button title={x} key={x} onClick={(r)=>{
+          return <button title={x} k
+          ey={x} onClick={(r)=>{
             setcurrentIndex(itemPerPage*e)
             setlastIndex(itemPerPage*(e+1))
             // console.log(currentIndex,lastIndex)
-          }} className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>{e}</button>
+          }} className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>{e+1}</button>
         })}
         <button onClick={NextPage} title="next" className='px-4 bg-yellow-300 py-1 m-1 rounded-md'>Next</button>
-        </div>
+        </div> */}
             </div>}
           </div>
         </div>
       </div>
 
       {editFormactive && (
-        <div
-          className={`absolute left-1/4 top-[15%] bg-gradient-to-br from-slate-900 to-cyan-900 shadow-inner shadow-emerald-500 rounded-md p-5`}
-        >
+        <div className={`absolute left-1/4 top-[15%] bg-gradient-to-br from-slate-900 to-cyan-900 shadow-inner shadow-emerald-500 rounded-md p-5`}>
           <button onClick={() => {
               seteditFormactive(false);
             }}
